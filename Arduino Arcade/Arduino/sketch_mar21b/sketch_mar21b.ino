@@ -10,18 +10,19 @@ int reles[NUM_RELES] = {4, 5, 6, 7, 8, 9, 10, 11, A5};
 int sensores[NUM_SENSORES] = {A0, A1, A2, A3, A4, A5, 12, 13};
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(115200);
     arduinoSerial.begin(9600);
     for (int i = 0; i < NUM_RELES; i++) {
         pinMode(reles[i], OUTPUT);
-        digitalWrite(reles[i], LOW);
+        digitalWrite(reles[i], HIGH);
     }
     for (int i = 0; i < 6; i++) { // Configurar pines analógicos como entrada
         pinMode(sensores[i], INPUT);
     }
     for (int i = 6; i < NUM_SENSORES; i++) { // Configurar pines digitales como entrada
-        pinMode(sensores[i], INPUT_PULLUP);
+        pinMode(sensores[i], OUTPUT);
     }
+    Serial.println("Bienvenido");
 }
 
 void loop() {
@@ -29,21 +30,21 @@ void loop() {
         String message = arduinoSerial.readStringUntil('\n');
         int relayIndex = message.toInt();
         if (relayIndex >= 0 && relayIndex < NUM_RELES) {
-            digitalWrite(reles[relayIndex], HIGH);
-            delay(500);
             digitalWrite(reles[relayIndex], LOW);
+            delay(500);
+            digitalWrite(reles[relayIndex], HIGH);
             arduinoSerial.println("OK");
         }
     }
     
     for (int i = 0; i < 6; i++) { // Leer pines analógicos
-        if (analogRead(sensores[i]) > 500) {
+        if (analogRead(sensores[i]) > 1000) {
             arduinoSerial.println(String(i));
             delay(1000);
         }
     }
     for (int i = 6; i < NUM_SENSORES; i++) { // Leer pines digitales
-        if (digitalRead(sensores[i]) == LOW) {
+        if (digitalRead(sensores[i]) == HIGH) {
             arduinoSerial.println(String(i));
             delay(1000);
         }
