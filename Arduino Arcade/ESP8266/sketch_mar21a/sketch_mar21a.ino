@@ -9,7 +9,7 @@ const char* topic_consumo = "expendedora1/consumo";
 const char* topic_ok = "expendedora1/ok";
 const char* topic_bahias = "expendedora1/bahia_vacia";
 const char* mqtt_user = "admin";  // Usuario RabbitMQ
-const char* mqtt_password = "admin";  // Contraseña
+const char* mqtt_password = "snepsystems";  // Contraseña
 
 WiFiClient espClient;
 PubSubClient client(espClient);
